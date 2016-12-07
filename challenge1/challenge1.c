@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char **argv) {
-    if (argc == 1) {
-        printf("Call: %s <name>\n", argv[0]);
-        exit(0);
-    }
+char globalVariable[] = "GlobalVar";
+const char globalStaticVariable[] = "GlobalStaticVar";
 
-    printf("Hello %s\n", argv[1]);
+int main(int argc, char **argv) {
+	char *localStackVar = "StackVar";
+	char *heapVar = malloc(16);
+
+	printf("Global variable:        0x%p\n", globalVariable);
+	printf("Global static variable: 0x%p\n", globalStaticVariable);
+	printf("Stack variable:         0x%p\n", localStackVar);
+	printf("Heap variable:          0x%p\n", heapVar);
 }
