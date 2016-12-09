@@ -1,7 +1,7 @@
-all: challenge2
+all: challenge10
 
-challenge2: challenge2.c
-	gcc challenge2.c -o challenge2
+challenge10: challenge10.c
+	gcc -m32 -z execstack -fno-stack-protector challenge10.c -o challenge10 -lcrypt
 
 clean:
-	rm challenge2
+	rm challenge10
