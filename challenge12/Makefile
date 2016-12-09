@@ -1,7 +1,7 @@
-all: challenge6
+all: challenge12
+
+challenge12: challenge12.c
+	gcc -m32 -z execstack -fno-stack-protector challenge12.c -o challenge12 -lcrypt
 
 clean:
-	rm challenge6
-
-challenge6: challenge6.c
-	gcc -o challenge6 challenge6.c
+	rm challenge12
