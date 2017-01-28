@@ -260,7 +260,7 @@ void cmdParser(char *input) {
 		cmdTodoParser(input);
 		return;
 	}
-	if (strcmp(cmd1, "list") == 0) {
+	if (strcmp(cmd1, "todolist") == 0) {
 		cmdListParser(input);
 		return;
 	}
@@ -273,7 +273,7 @@ void cmdParser(char *input) {
 		return;
 	}
 	if (strcmp(cmd1, "quit") == 0) {
-		exit();
+		exit(1);
 		return;
 	}
 
@@ -291,9 +291,9 @@ void cmdHelpTodo() {
 
 void cmdHelpList() {
 	printf("List:\n");
-	printf("  list view <list>\n");
-	printf("  list add <listDst> <listSrc>:<entry>\n");
-	printf("  list del <list> <entry>\n");
+	printf("  todolist view <list>\n");
+	printf("  todolist add <listDst> <listSrc>:<entry>\n");
+	printf("  todolist del <list> <entry>\n");
 }
 
 
@@ -302,6 +302,7 @@ void cmdHelpAlarm() {
 	printf("  alarm add <alarmText>\n");
 	printf("  alarm list\n");
 	printf("  alarm view <alarmIndex>\n");
+	printf("  alarm del <alarmIndex>\n");
 }
 
 

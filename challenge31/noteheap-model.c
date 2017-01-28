@@ -163,6 +163,7 @@ void listDel(char *listName, char *listEntry) {
 
 	free(todo->body);
 	free(todo);
+	global.todos[listIndex][listEntryIndex] = NULL;
 
 	printf("Deleted entry %i on list %s\n",
 		listEntryIndex, listName);
