@@ -17,6 +17,8 @@ def signal_handler(signal, frame):
 	for byte in bfBytes:
 		sys.stdout.write( hex(byte) + " " )
 	print ""
+	sys.exit(0)
+
 
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -89,6 +91,7 @@ while n < 32:
 
 offset = n - 1 
 print "Offset is: " + str(offset)
+raw_input("Press Enter to continue...")
 
 n = 0
 canary = ""
