@@ -1,9 +1,14 @@
 # Yookiterm Challenge Files
 
-The source code of vulnerable programs and their corresponding exploit for yookiterm.
+The source code of vulnerable programs and their corresponding exploit for Yookiterm.
 
-This is checked out in the containers (which are served by yookiterm-lxdserver). 
+The corresponding challenges / writeups are available at: https://github.com/dobin/yookiterm-challenges
 
+It is served at: https://exploit.courses
+
+The content consists of challenges and homework, in the areas of debugging,
+vulnerable programs (Stack- and Heap overflows), corresponding Exploits and
+vulnerable ARM programs.
 
 ## What is yookiterm
 
