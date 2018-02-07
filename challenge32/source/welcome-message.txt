@@ -1,0 +1,5 @@
+*************************************************************
+*** Welcome to Movie Database 2000. It still lacks        ***
+*** some features like persistency but hey, at least it's ***
+*** safe =)                                               ***
+*************************************************************
