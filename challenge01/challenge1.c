@@ -4,12 +4,19 @@
 char globalVariable[] = "GlobalVar";
 const char globalStaticVariable[] = "GlobalStaticVar";
 
+void function(void) {
+	printf("blah");
+}
+
+
 int main(int argc, char **argv) {
-	char *localStackVar = "StackVar";
+	char localStackVar[16] = "StackVar";
 	char *heapVar = malloc(16);
 
-	printf("Global variable:        0x%p\n", globalVariable);
-	printf("Global static variable: 0x%p\n", globalStaticVariable);
-	printf("Stack variable:         0x%p\n", localStackVar);
-	printf("Heap variable:          0x%p\n", heapVar);
+	printf("Global variable:        %p\n", globalVariable);
+	printf("Global static variable: %p\n", globalStaticVariable);
+	printf("Stack variable:         %p\n", localStackVar);
+	printf("Heap variable:          %p\n", heapVar);
+	printf("Function:               %p\n", &function);
 }
+
