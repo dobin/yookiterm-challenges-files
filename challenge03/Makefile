@@ -14,7 +14,7 @@ print3: print3.asm
 	ld -m elf_i386 -o print3 print3.o
 
 shellcodetest: shellcodetest.c
-	gcc shellcodetest.c -z execstack -o shellcodetest
+	gcc shellcodetest.c -z execstack -m32 -no-pie -o shellcodetest
 
 clean:
 	rm shellcodetest print print.o print2 print2.o print3 print3.o
