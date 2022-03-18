@@ -7,11 +7,11 @@ void main(int argc, char **argv) {
     char buffer[128];
 
     char str[8];
-    strcpy(str, "1234567"); // str[7] = ‘\0’
+    strcpy(str, "1234567");     // str[7] = ‘\0’
     printf("A: %i  %s\n", strlen(str), str);
 
-    strcpy(str, "12345678");  // str[7] = ‘8’
-                            // str[8] = ‘\0’
+    strcpy(str, "12345678");    // str[7] = ‘8’
+                                // str[8] = ‘\0’
     printf("B: %i  %s\n", strlen(str), str);
 
     strcpy(str, "123456789");   // str[7] = ‘8’
