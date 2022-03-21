@@ -28,7 +28,7 @@ void main(int argc, char **argv) {
     }
 
     int arr[] = { 42, 42 };
-    int inputLen = strtol(argv[1], NULL, 0);
+    int inputLen = strtoll(argv[1], NULL, 0);
 
     example(arr, inputLen);
 }

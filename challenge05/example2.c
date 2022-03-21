@@ -29,8 +29,8 @@ void main(int argc, char **argv) {
         exit(1);
     }
 
-    int len1 = strtol(argv[1], NULL, 0);
-    int len2 = strtol(argv[2], NULL, 0);
+    int len1 = strtoll(argv[1], NULL, 0);
+    int len2 = strtoll(argv[2], NULL, 0);
 
     example(buf1, buf2, len1, len2);
 }

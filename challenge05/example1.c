@@ -23,7 +23,7 @@ void main(int argc, char **argv) {
         exit(1);
     }
 
-    int inputLen = strtol(argv[1], NULL, 0);
+    int inputLen = strtoll(argv[1], NULL, 0);
     char *input = argv[2];
 
     example(inputLen, input);
