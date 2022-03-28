@@ -1,4 +1,4 @@
 all: datastructures
 
 datastructures:
-	gcc datastructures.c -O0 -o datastructures -fno-stack-protector -no-pie -m32
+	gcc challenge2.c -O0 -o challenge2 -fno-stack-protector -no-pie -m32
