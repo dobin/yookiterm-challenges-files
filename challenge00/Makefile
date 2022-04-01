@@ -1,7 +1,7 @@
-all: challenge0
+all: challenge00
 
-challenge0: challenge0.c
-	gcc challenge0.c -no-pie -m32 -o challenge0
+challenge00: challenge00.c
+	gcc challenge00.c -no-pie -m32 -o challenge00
 
 clean:
-	rm challenge0
+	rm challenge00
