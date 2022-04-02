@@ -1,7 +1,7 @@
-all: challenge7
+all: challenge07
 
-challenge7: challenge7.c
-	gcc challenge7.c -O0 -no-pie -m32 -fno-omit-frame-pointer -o challenge7
+challenge07: challenge07.c
+	gcc challenge07.c -O0 -no-pie -m32 -fno-omit-frame-pointer -ggdb -o challenge07
 
 clean:
-	rm challenge0
+	rm challenge07
