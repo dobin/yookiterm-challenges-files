@@ -1,4 +1,6 @@
+CFLAGS = -O0 -no-pie -fno-pie -m32 -fno-omit-frame-pointer -ggdb
+
 all: datastructures
 
 datastructures:
-	gcc challenge02.c -O0 -o challenge02 -fno-stack-protector -no-pie -m32
+	gcc challenge02.c $(CFLAGS) -o challenge02
