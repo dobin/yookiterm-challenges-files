@@ -11,7 +11,7 @@ void functionInt(int c) {
         d = c + 1;
 }
 
-void functionStrcpy(char *a, char *b) {
+void functionString(char *a, char *b) {
         strcpy(a, b);
 }
 
@@ -21,5 +21,5 @@ int main(int argc, char **argv) {
 
         functionMinimal();
         functionInt(5);
-        functionStrcpy(a, b);
+        functionString(a, b);
 }

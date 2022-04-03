@@ -1,7 +1,9 @@
-all: challenge8
+CFLAGS = -m32 -no-pie -fno-pie -O0 -fno-omit-frame-pointer -fno-stack-protector
 
-challenge8: challenge8.c
-	gcc challenge8.c -o challenge8 -m32 -no-pie -O0 -fno-omit-frame-pointer -fno-stack-protector
+all: challenge08
+
+challenge08: challenge08.c
+	gcc challenge08.c -o challenge08 
 
 clean:
-	rm challenge8
+	rm challenge08
