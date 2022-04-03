@@ -1,4 +1,4 @@
-CFLAGS = -O0 -no-pie -fno-pie -m32 -fno-omit-frame-pointer -ggdb
+CFLAGS = -O0 -no-pie -fno-pie -m32 -fno-omit-frame-pointer
 
 all: datastructures
 

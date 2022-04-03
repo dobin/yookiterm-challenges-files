@@ -3,16 +3,9 @@
 #include <crypt.h>
 #include <string.h>
 
-/* hash of: "ourteacheristehbest" */
-const char *adminHash = "$6$saaaaalty$cjw9qyAKmchl7kQMJxE5c1mHN0cXxfQNjs4EhcyULLndQR1wXslGCaZrJj5xRRBeflfvmpoIVv6Vs7ZOQwhcx.";
-
-
 int checkPassword(char *password) {
-    char *hash;
-
-    /* $6$ is SHA256 */
-    hash = crypt(password, "$6$saaaaalty");
-
+    char *adminHash = "$6$saaaaalty$cjw9qyAKmchl7kQMJxE5c1mHN0cXxfQNjs4EhcyULLndQR1wXslGCaZrJj5xRRBeflfvmpoIVv6Vs7ZOQwhcx.";
+    char *hash = crypt(password, "$6$saaaaalty");
     if (strcmp(hash, adminHash) == 0) {
         return 1;
     } else {
@@ -20,46 +13,29 @@ int checkPassword(char *password) {
     }
 }
 
-
-void handleIsAdmin(void) {
-        printf("You are admin!\n");
+void secret() {
+    printf("Secret functionality\n");
 }
-
-void handleIsNotAdmin(void) {
-        printf("You are not admin.\n");
-}
-
-
-int checkName(char *username) {
-    char name[64]; // should be enough for all usernames
-
-    // create according username
-    sprintf(name, "%s-%s", "cmd", username);
-
-    // atm we accept all usernames
-    return 1;
-}
-
 
 void handleData(char *username, char *password) {
-    if (! checkName(username)) {
-        return;
-    }
+    int isAdmin = 0;
+    char name[128];
 
-    // Check if user has admin privileges
-    if(checkPassword(password)) {
-        handleIsAdmin();
+    isAdmin = checkPassword(password);
+    strcpy(name, username);
+
+    printf("isAdmin: 0x%x\n", isAdmin);
+    if(isAdmin > 0) {
+        printf("You are admin!\n");
     } else {
-        handleIsNotAdmin();
+        printf("Not admin.\n");
     }
 }
-
 
 int main(int argc, char **argv) {
     if (argc != 3) {
-        printf("Call: %s <name> <password>\n", argv[0]);
+        printf("Usage: %s <name> <password>\n", argv[0]);
         exit(0);
     }
-
     handleData(argv[1], argv[2]);
 }

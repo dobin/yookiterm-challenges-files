@@ -1,4 +1,4 @@
-CFLAGS = -O0 -no-pie -fno-pie -m32 -fno-omit-frame-pointer
+CFLAGS = -O0 -no-pie -fno-pie -m32 -fno-omit-frame-pointer -ggdb
 
 all: challenge00
 
