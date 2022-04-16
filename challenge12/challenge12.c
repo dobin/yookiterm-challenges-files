@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <crypt.h>
 #include <string.h>
+#include <unistd.h>
 
 int checkPassword(char *password) {
     char *adminHash = "$6$saaaaalty$cjw9qyAKmchl7kQMJxE5c1mHN0cXxfQNjs4EhcyULLndQR1wXslGCaZrJj5xRRBeflfvmpoIVv6Vs7ZOQwhcx.";
@@ -24,7 +25,6 @@ void handleData(char *username, char *password) {
     isAdmin = checkPassword(password);
     strcpy(name, username);
 
-    printf("isAdmin: 0x%x\n", isAdmin);
     if(isAdmin > 0) {
         printf("You are admin!\n");
     } else {

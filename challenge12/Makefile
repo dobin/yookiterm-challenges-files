@@ -1,7 +1,9 @@
+CFLAGS = -O0 -z execstack -fno-stack-protector -no-pie -fno-pie -fno-omit-frame-pointer -ggdb
+
 all: challenge12
 
 challenge12: challenge12.c
-	gcc -no-pie -z execstack -fno-stack-protector challenge12.c -o challenge12 -lcrypt
+	gcc challenge12.c $(CFLAGS) -o challenge12 -lcrypt
 
 clean:
 	rm challenge12
