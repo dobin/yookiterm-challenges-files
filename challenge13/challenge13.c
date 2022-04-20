@@ -24,7 +24,7 @@ int checkPassword(char *password) {
 
 int handleData(char *username, char *password) {
    int isAdmin = 0;
-   char name[128];
+   char name[256];
 
    isAdmin = checkPassword(password);
    strcpy(name, username);
