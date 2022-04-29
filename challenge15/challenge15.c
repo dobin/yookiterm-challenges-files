@@ -12,6 +12,11 @@
 #include <signal.h>
 
 
+// Only included so we have the symbol for system()
+void notcalled() {
+        system("nothing");
+}
+
 int checkPassword(char *password) {
    char *adminHash = "$6$saaaaalty$cjw9qyAKmchl7kQMJxE5c1mHN0cXxfQNjs4EhcyULLndQR1wXslGCaZrJj5xRRBeflfvmpoIVv6Vs7ZOQwhcx.";
    char *hash = crypt(password, "$6$saaaaalty");
@@ -28,6 +33,10 @@ int handleData(char *username, char *password) {
 
    isAdmin = checkPassword(password);
    strcpy(name, username);
+
+   // This line is a NOP, but will populate RDI with the address of "username"
+   // Without it, RDI would point to name[], which gets destroyed by system() 
+   memcpy(username, username, strlen(username));
 
    if(isAdmin > 0) {
       return 1;
@@ -65,7 +74,7 @@ int makeServer(int portno) {
    int n, pid;
 
    signal(SIGCHLD, SIG_IGN);
-   
+
    bzero((char *) &serv_addr, sizeof(serv_addr));
    serv_addr.sin_family = AF_INET;
    serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -92,8 +101,10 @@ int makeServer(int portno) {
 int main( int argc, char *argv[] ) {
    struct sockaddr_in cli_addr;
    int clilen = sizeof(cli_addr);
+   int port = 5001;
 
-   int serverSocket = makeServer(5001);
+   printf("Starting server on port: %i\n", port);
+   int serverSocket = makeServer(port);
    while (1) {
       int newsockfd = accept(serverSocket, (struct sockaddr *) &cli_addr, &clilen);
       if (newsockfd < 0) {
@@ -101,7 +112,7 @@ int main( int argc, char *argv[] ) {
          exit(1);
       }
       printf("Client connected\n");
-      
+
       int pid = fork();
       if (pid < 0) {
          perror("ERROR on fork");
@@ -117,6 +128,3 @@ int main( int argc, char *argv[] ) {
       }
    }
 }
-
-
-
