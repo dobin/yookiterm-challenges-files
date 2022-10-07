@@ -78,7 +78,7 @@ void Strncpy() {
 
 void main(int argc, char **argv) {
         if (argc != 2) {
-                printf("%s: array|struct|strncpy", argv[0]);
+                printf("%s: array|struct|strncpy\n", argv[0]);
                 exit(1);
         }
         if (strcmp(argv[1], "array") == 0) {
